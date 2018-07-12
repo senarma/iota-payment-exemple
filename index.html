@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Token Generation WITH IOTA</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    <script>
+        let paymentAddress
+        $(function(){
+            const socket = io();
+            let token = Math.random() * 600
+
+
+            socket.on('newaddress', function(address){
+                paymentAddress = address
+                $('#image').attr('src','pay.png')
+                $('#text').html('You need to send 1 IOTA to this address: <br/>'+ address)
+            })
+            socket.on('unlocked', function(unlockedAddress){
+                if(unlockedAddress===paymentAddress){
+                    $('#image').attr('src','unlocked.png')
+                    $('#text').html('Payment Confirmed - Access Token: ' +token)
+                }
+            })
+        })
+</script>
+
+</head>
+<body>
+    <h1>Generate your Token WITH IOTA</h1>
+    <br/>
+    <p><img id="image" width="100px" src="waiting.png"></p>
+    <p id="text">We are generating your Payment Address  </p>
+    
+    
+</body>
+</html>
